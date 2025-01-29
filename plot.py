@@ -56,7 +56,6 @@ def plot_attention_head(attention_tensor, head_index, title_prefix=""):
     im = plt.imshow(normalized_map, cmap='magma', vmin=0, vmax=1)
     plt.colorbar(im, label='Attention Weight')
     plt.title(f'{title_prefix} Enhanced Attention Map for Head {head_index}')
-    plt.colorbar(im)
     plt.xlabel('Key Positions')
     plt.ylabel('Query Positions')
     plt.show()
