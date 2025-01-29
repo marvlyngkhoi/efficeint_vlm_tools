@@ -40,7 +40,7 @@ def load_model(model_path="HuggingFaceTB/SmolVLM-Base",device='cpu'):
     model = AutoModelForVision2Seq.from_pretrained(
         "HuggingFaceTB/SmolVLM-Base",
         torch_dtype=torch.bfloat16,
-        _attn_implementation="flash_attention_2" if device == "cuda" else "eager",
+        #_attn_implementation="flash_attention_2" if device == "cuda" else "eager",
          output_attentions=True,
          return_dict_in_generate=True,
     ).to(device)
