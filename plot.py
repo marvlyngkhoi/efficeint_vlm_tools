@@ -23,7 +23,7 @@ def plot_attention_head(attention_tensor, head_index, title_prefix=""):
     if head_index >= num_heads:
         raise ValueError(f"head_index must be less than the number of heads ({num_heads})")
     
-    # Select the attention map for the specified head (for the first item in the batch)
+    # Select the attention map for the specified head (for the first item in the batch) 
     attention_map = attention_tensor[0, head_index]
     
     # Convert the attention map to float32 if it's in an unsupported dtype
