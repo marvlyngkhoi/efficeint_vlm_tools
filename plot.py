@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import ipywidgets as widgets
 from IPython.display import display
+import cv2
 
 def plot_attention_head(attention_tensor, head_index, title_prefix=""):
     """
@@ -31,13 +32,31 @@ def plot_attention_head(attention_tensor, head_index, title_prefix=""):
         attention_map = attention_map.float()
     
     # Detach from computation graph and move to CPU for plotting
-    attention_map = attention_map.detach().cpu().numpy()
+    # attention_map = attention_map.detach().cpu().numpy()
     
+    # # Create the plot
+    # plt.figure(figsize=(20, 20))
+    # im = plt.imshow(attention_map, cmap='viridis', vmin=0, vmax=1)
+    # plt.colorbar(im, label='Attention Weight')
+    # plt.title(f'{title_prefix}Attention Map for Head {head_index}')
+    # plt.xlabel('Key Positions')
+    # plt.ylabel('Query Positions')
+    # plt.show()
+    
+    attention_map = attention_map.detach().cpu().numpy()
+
+    # Interpolate (Extrapolate) using bicubic interpolation
+    resized_map = cv2.resize(attention_map, (256, 256), interpolation=cv2.INTER_CUBIC)
+
+    # Normalize the values for better contrast
+    normalized_map = (resized_map - resized_map.min()) / (resized_map.max() - resized_map.min() + 1e-8)
+
     # Create the plot
-    plt.figure(figsize=(20, 20))
-    im = plt.imshow(attention_map, cmap='viridis', vmin=0, vmax=1)
+    plt.figure(figsize=(10, 10))
+    im = plt.imshow(normalized_map, cmap='magma', vmin=0, vmax=1)
     plt.colorbar(im, label='Attention Weight')
-    plt.title(f'{title_prefix}Attention Map for Head {head_index}')
+    plt.title(f'{title_prefix} Enhanced Attention Map for Head {head_index}')
+    plt.colorbar(im)
     plt.xlabel('Key Positions')
     plt.ylabel('Query Positions')
     plt.show()
